@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
        
         Months month = static_cast<Months>(userInput);
 
-        while (static_cast<int>(month) != 0) {
+        if (static_cast<int>(month) != 0) {
             switch (month) {
                 case(Months::JANUARY):
                     std::cout << "Январь" << std::endl;
@@ -70,7 +70,7 @@ int main(int argc, char** argv) {
                     std::cout << "Неправильный номер!" << std::endl;
                     break;
             }
-            break;
+            //break;
         }
     }
     std::cout << "Спасибо!" << std::endl;
