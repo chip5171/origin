@@ -4,12 +4,12 @@
 
 class Calculator
 {
-public:
+private:
     double num1;
     double num2;
 
+public:
     bool set_num1(double num1) {
-        bool n = true;
         if (num1 != 0) {
             this->num1 = num1;
             return true;
@@ -19,7 +19,6 @@ public:
         }
     }
     bool set_num2(double num2) {
-        bool n = true;
         if (num2 != 0) {
             this->num2 = num2;
             return true;
