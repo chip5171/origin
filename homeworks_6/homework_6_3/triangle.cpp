@@ -8,6 +8,9 @@ Triangle::Triangle() {
     A_ = 0; B_ = 0; C_ = 0;
 }
 Triangle::Triangle(int a, int b, int c, int A, int B, int C) {
+    if (sidesCount == 3 && (A_ + B_ + C_ == 180)) {
+        throw std::domain_error("Причина: сумма углов треугольника не равна 180");
+    }
     a_ = a; b_ = b; c_ = c; A_ = A; B_ = B; C_ = C;
     sidesCount = 3;
     name = "Треугольник";
