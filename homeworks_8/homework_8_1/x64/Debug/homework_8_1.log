@@ -1,0 +1,3 @@
+﻿  homework_8_1.cpp
+D:\УЧЕБА\progi\homeworks_8\homework_8_1\homework_8_1.cpp(10,26): warning C4267: return: преобразование из "size_t" в "int"; возможна потеря данных
+  homework_8_1.vcxproj -> D:\УЧЕБА\progi\homeworks_8\homework_8_1\x64\Debug\homework_8_1.exe
