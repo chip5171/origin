@@ -1,0 +1,6 @@
+cmake_minimum_required(VERSION 3.22.0)
+project(homework_11_3)
+set(CMAKE_WINDOWS_EXPORT_ALL_SYMBOLS ON)
+add_library (LeavingDynamicLibrary SHARED leaving_dynamic_library.h leaving_dynamic_library.cpp)
+add_executable(HomeworkDynamicLibraryExe homework_11_3.cpp)
+target_link_libraries (HomeworkDynamicLibraryExe LeavingDynamicLibrary)
