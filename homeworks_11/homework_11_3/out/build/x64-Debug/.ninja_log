@@ -1,6 +1,0 @@
-# ninja log v5
-1	810	6891445182922899	CMakeFiles/LeavingDynamicLibrary.dir/leaving_dynamic_library.cpp.obj	d627dff2335a0db2
-9	1048	6891445185316503	CMakeFiles/HomeworkDynamicLibraryExe.dir/homework_11_3.cpp.obj	ee600fc57019d358
-817	2452	6891445195700062	LeavingDynamicLibrary.dll	2c08c1b1458d00cf
-817	2452	6891445195700062	LeavingDynamicLibrary.lib	2c08c1b1458d00cf
-2453	3442	6891445206125955	HomeworkDynamicLibraryExe.exe	598ff0252188c7d4
