@@ -14,14 +14,19 @@ GroundTransport::GroundTransport(int s) {
 int GroundTransport::getMovementTime() {
     return movementTime_;
 }
-int GroundTransport::getRestTime(int s) {
+double GroundTransport::getRestTime(int s) {
     return restTime_;
 }
 int GroundTransport::getStopNumber(int s) {
-    return (s / speed_ / movementTime_);
+    int stopNumber;
+    int baseTime = s / speed_;
+    if (baseTime % movementTime_ != 0) stopNumber = baseTime / movementTime_;
+    else stopNumber = baseTime / movementTime_ - 1;
+    return stopNumber;
 }
 double GroundTransport::getTotalTime(int s) {
-    return (s / speed_ + restTime_);
+    double baseTime = s / speed_;
+    return (baseTime + restTime_);
 }
 
 
