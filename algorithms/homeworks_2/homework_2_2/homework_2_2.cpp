@@ -18,12 +18,12 @@ unsigned long long f(unsigned int n)
     return result;
 }
 
-int main()
+int main(int argc, char** argv)
 {
     setlocale(LC_ALL, "Rus");
 
     unsigned int x;
-    std::cout << "Сколько вывести чисел?";
+    std::cout << "Сколько вывести чисел? ";
     std::cin >> x;
     std::cout << "Числа Фибоначчи:" << std::endl;
     for (int i = 0; i < x; ++i) {
