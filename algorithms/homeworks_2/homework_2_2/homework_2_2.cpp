@@ -7,15 +7,13 @@
 
 #include <iostream>
 
-unsigned long long f(unsigned int n)
-{
-    unsigned long long first = 0, second = 1, result = n;
-    for (int i = 0; i < n; ++i) {
-        result = first + second;
-        first = second;
-        second = result;
-    }
-    return result;
+unsigned long long f(int n) {
+    static long long arr[100];
+    if (arr[n] != 0) return arr[n];
+    unsigned long long t = n;
+    if (n < 0) return 0;
+    if (n > 1) t = f(n - 1) + f(n - 2);
+    return arr[n] = t;
 }
 
 int main(int argc, char** argv)
