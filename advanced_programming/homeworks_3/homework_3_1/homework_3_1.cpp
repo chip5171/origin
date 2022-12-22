@@ -8,6 +8,9 @@ private:
     int actual_size; 
     int* array;
 public:
+    smart_array(const smart_array&) = delete;
+    smart_array& operator=(const smart_array&) = delete;
+    
     smart_array() {
         logical_size = 0;
         actual_size = 0;
@@ -22,11 +25,10 @@ public:
     ~smart_array() {
         if (array) delete[] array;
     }
-    int* add_element(int element) {
+    void add_element(int element) {
         if (logical_size < actual_size) {
             array[logical_size] = element;
             logical_size++;
-            return array;
         }
         else {
             throw std::exception("Количество элементов превышает размер массива");
@@ -36,7 +38,7 @@ public:
         return logical_size;
     }
     int get_element(int index) {
-        if (index < actual_size) {
+        if (index >= 0 && index < actual_size) {
             return array[index];
         }
         else {

@@ -33,18 +33,17 @@ public:
         return logical_size;
     }
     int get_element(int index) {
-        if (index < actual_size) {
+        if (index >= 0 && index < actual_size) {
             return array[index];
         }
         else {
             throw std::exception("В массиве нет элемента с таким индексом");
         }
     }
-    int* add_element(int element) {
+    void add_element(int element) {
         if (logical_size < actual_size) {
             array[logical_size] = element;
             logical_size++;
-            return array;
         }
         else {
             throw std::exception("Количество элементов превышает размер массива");
@@ -56,14 +55,16 @@ public:
         }
     }
     smart_array& operator = (const smart_array& b) {
-        if (actual_size > 0)
-            delete[] array;
+        if (&b != this) {
+            if (actual_size > 0)
+                delete[] array;
             actual_size = b.actual_size;
             logical_size = b.logical_size;
             array = new int[actual_size];
-            for (int i = 0; i < actual_size; i++) 
+            for (int i = 0; i < actual_size; i++)
                 array[i] = b.array[i];
-            return *this;
+        }
+        return *this;
     }
 };
 
