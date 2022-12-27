@@ -1,3 +1,5 @@
+//homework_4_2 list.h
+
 #pragma once
 #include <iostream>
 #include "list_node.h"

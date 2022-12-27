@@ -1,0 +1,7 @@
+C:/Users/chip5171/Desktop/homeworks_4/homework_4_2/build/CMakeFiles/homework_4_2.dir
+C:/Users/chip5171/Desktop/homeworks_4/homework_4_2/build/CMakeFiles/homework_4_2_Test.dir
+C:/Users/chip5171/Desktop/homeworks_4/homework_4_2/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/chip5171/Desktop/homeworks_4/homework_4_2/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/chip5171/Desktop/homeworks_4/homework_4_2/build/Catch2-build/CMakeFiles/ALL_BUILD.dir
+C:/Users/chip5171/Desktop/homeworks_4/homework_4_2/build/Catch2-build/src/CMakeFiles/Catch2.dir
+C:/Users/chip5171/Desktop/homeworks_4/homework_4_2/build/Catch2-build/src/CMakeFiles/Catch2WithMain.dir
