@@ -51,6 +51,4 @@ TEST_CASE("test list", "[list]") {
 int main(int argc, char* argv[]) {
    
     return Catch::Session().run(argc, argv);
-
-
 }
