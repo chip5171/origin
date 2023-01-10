@@ -1,7 +1,0 @@
-D:/РАБОТАЮ/homeworks_4/homework_4_1/build/CMakeFiles/homework_4_1.dir
-D:/РАБОТАЮ/homeworks_4/homework_4_1/build/CMakeFiles/homework_4_1_Test.dir
-D:/РАБОТАЮ/homeworks_4/homework_4_1/build/CMakeFiles/ALL_BUILD.dir
-D:/РАБОТАЮ/homeworks_4/homework_4_1/build/CMakeFiles/ZERO_CHECK.dir
-D:/РАБОТАЮ/homeworks_4/homework_4_1/build/Catch2-build/CMakeFiles/ALL_BUILD.dir
-D:/РАБОТАЮ/homeworks_4/homework_4_1/build/Catch2-build/src/CMakeFiles/Catch2.dir
-D:/РАБОТАЮ/homeworks_4/homework_4_1/build/Catch2-build/src/CMakeFiles/Catch2WithMain.dir
