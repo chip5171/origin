@@ -10,6 +10,7 @@ private:
     int column;
 
 public:
+
     Table(int rowСount, int columnCount) : row(rowСount), column(columnCount) {
         
         if ((rowСount >= 0) && (columnCount >= 0)) {
@@ -21,6 +22,9 @@ public:
         else { throw std::exception("Отрицательный размер массива"); }
     }
    
+    //Table(const Table&) = delete; компилятор ругается не дает создать экземпляр
+    Table& operator=(const Table&) = delete;
+
     T* operator[](int index) {
         if ((index >= 0) && (index < (row - 1))) {
             return table[index];
