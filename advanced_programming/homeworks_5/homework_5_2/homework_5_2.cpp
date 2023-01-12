@@ -22,7 +22,7 @@ public:
         else { throw std::exception("Отрицательный размер массива"); }
     }
    
-    //Table(const Table&) = delete; компилятор ругается не дает создать экземпляр
+    Table(const Table&) = delete;// компилятор ругается не дает создать экземпляр
     Table& operator=(const Table&) = delete;
 
     T* operator[](int index) {
