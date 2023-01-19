@@ -21,7 +21,7 @@ public:
     ~MyUniquePtr() {
         delete ptr_;
     }
-    MyUniquePtr<T>& operator*() const {
+    T& operator*() const {
         return *ptr_;
     }
     T* release(T* p) {
@@ -44,5 +44,11 @@ int main() {
     sTest* p = ptr.release(S_ptr);
     std::cout << p->a_ << "\n";
     
+    MyUniquePtr<double> ptr1(new double);
+
+    *ptr1 = 3.5;
+
+    std::cout << *ptr1 << std::endl; // Выведет 3.5
+
     return 0;
 }
