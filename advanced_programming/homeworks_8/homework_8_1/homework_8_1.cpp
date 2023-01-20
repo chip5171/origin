@@ -18,8 +18,8 @@ public:
 
     ~tridiagonal_matrix() { std::cout << "destructor called\n"; }
 
-    std::unique_ptr<tridiagonal_matrix> clone(const std::unique_ptr<tridiagonal_matrix>& p) {
-        return p ? std::make_unique<tridiagonal_matrix>(*this) : nullptr;
+    std::unique_ptr<tridiagonal_matrix> clone() {
+        return this == nullptr ? std::make_unique<tridiagonal_matrix>(*this) : nullptr;
     }
 };
 
@@ -34,7 +34,7 @@ int main(int argc, char** argv) {
         middle
         );
         
-    auto matrix_clone = matrix->clone(matrix);
+    auto matrix_clone = matrix->clone();
    
     return 0;
 }
