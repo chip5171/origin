@@ -4,7 +4,7 @@
 #include <string>
 
 class big_integer {
-	std::string value; // значение числа
+	std::string value; 
 
 public:
 	big_integer() {}
@@ -40,7 +40,7 @@ public:
 		return value;
 	}
 
-	big_integer operator+(const big_integer& bigInt) const {
+	big_integer operator + (const big_integer& bigInt) const {
 		std::string num2 = bigInt.getValue(); 
 		size_t len1 = value.length(); 
 		size_t len2 = num2.length(); 
@@ -60,7 +60,7 @@ public:
 		return big_integer(std::string(res));
 	}
 	
-	big_integer operator*(const big_integer& bigInt) const {
+	big_integer operator * (const big_integer& bigInt) const {
 		if (value == "0" || bigInt.getValue() == "0")
 			return 0; 
 		std::string value2 = bigInt.getValue(); 
@@ -83,7 +83,6 @@ public:
 				b[i] = (i < len2) ? (value2[len2 - 1 - i] - '0') : 0;
 				res[i] = 0;
 			}
-
 			for (size_t i = 0; i < len1; i++) {
 				for (size_t j = 0; j < len2; j++) {
 					res[length - 1 - (i + j)] += a[i] * b[j];
@@ -91,7 +90,6 @@ public:
 					res[length - 1 - (i + j)] %= 10;
 				}
 			}
-
 			for (size_t i = 0; i < length; i++)
 				res[length - 1 - i] += '0';
 
@@ -119,7 +117,6 @@ int main(int argc, char** argv) {
 	catch (const std::exception& ex) {
 		std::cout << ex.what() << std::endl;
 	}
-	
 	return 0;
 }
 
