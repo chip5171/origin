@@ -9,6 +9,45 @@
 #include <sstream> 
 #include <set> 
 
+    //функция удаления начальных пробелов
+    std::string& removeFrontSpaces(std::string& str) {
+        size_t startPosition = str.find_first_not_of(" \t\r\n\v\f");
+
+        if (std::string::npos != startPosition) {
+            str = str.substr(startPosition);
+        }
+        return str;
+    }
+
+    //функция удаления конечных пробелов
+    std::string& removeLastSpaces(std::string& str) {
+        size_t endPosition = str.find_last_not_of(" \t\r\n\v\f");
+
+        if (std::string::npos != endPosition) {
+            str = str.substr(0, endPosition + 1);
+        }
+        return str;
+    }
+
+    //функция удаления комментариев
+    std::string& commentIgnore(std::string& str) {
+        size_t commentPosition = str.find(";");
+
+        if (std::string::npos != commentPosition) {
+            str = str.substr(0, commentPosition);
+        }
+        return str;
+    }
+
+    //функция добавления списка переменных секции в строку (для исключения)
+    std::string firstMapToString(std::unordered_map<std::string, std::string> const& mp) {
+        std::ostringstream oss;
+        for (auto const& map : mp) {
+            oss << map.first << " " ;
+        }
+        return oss.str();
+    }
+
 struct Section {
     std::string name;
     std::unordered_map< std::string, std::string > variableValue;
@@ -30,6 +69,11 @@ public:
         int value = std::stoi(keyValue(sectionName, variableName));
             return value;
     }
+    template <>
+    const double getValue(const std::string& sectionName, const std::string& variableName) {
+        double value = std::stod(keyValue(sectionName, variableName));
+        return value;
+    }
 
 private:
     //функция доступа к секции по названию
@@ -40,53 +84,14 @@ private:
                 return sect.name.compare(sectionName) == 0;
             }
         );
-        return search != listOfSections.end() ? &*search : NULL;
+        return search != listOfSections.end() ? &*search : nullptr;
     }
-    
-    //функция добавления списка переменных секции в строку (для исключения)
-    std::string firstMapToString(std::unordered_map<std::string, std::string> const& mp) {
-        std::ostringstream oss;
-        for (auto const& map : mp) {
-            oss << map.first << " " ;
-        }
-        return oss.str();
-    }
-
+ 
     //функция доступа к списку секций
     const std::list<Section>& getListOfSections() {
         return listOfSections;
     }
-    
-    //функция удаления начальных пробелов
-    static std::string& removeFrontSpaces(std::string& str) {
-        size_t startPosition = str.find_first_not_of(" \t\r\n\v\f");
-
-        if (std::string::npos != startPosition) {
-            str = str.substr(startPosition);
-        }
-        return str;
-    }
-
-    //функция удаления конечных пробелов
-    static std::string& removeLastSpaces(std::string& str) {
-        size_t endPosition = str.find_last_not_of(" \t\r\n\v\f");
-
-        if (std::string::npos != endPosition) {
-            str = str.substr(0, endPosition + 1);
-        }
-        return str;
-    }
-
-    //функция удаления комментариев
-    static std::string& commentIgnore(std::string& str) {
-        size_t commentPosition = str.find(";");
-
-        if (std::string::npos != commentPosition) {
-            str = str.substr(0, commentPosition);
-        }
-        return str;
-    }
-    
+     
     //функция обработки повторяющейся секции
     void sectionAddition(const std::string sectionName, std::string variableName, std::string variableValue) {
         Section* section = getSection(sectionName);
@@ -120,11 +125,11 @@ private:
                     }
                     
                     currentSection.name = line.substr(1, end - 1);
-                    if (NamesOfSections.count(currentSection.name)) {
+                    if (namesOfSections.count(currentSection.name)) {
                         key = true;
                         std::string notUniqueSection = currentSection.name;
                     }
-                    else NamesOfSections.insert(currentSection.name);
+                    else namesOfSections.insert(currentSection.name);
                 }
                 else {
                     throw std::invalid_argument("Incorrect syntax in line " + std::to_string(lineCount));
@@ -165,7 +170,7 @@ private:
     //функция получения значения ключа с обработкой ошибок
     const std::string keyValue(const std::string& sectionName, const std::string& variableName) {
         Section* section = getSection(sectionName);
-        if (section != NULL) {
+        if (section != nullptr) {
             const auto it = section->variableValue.find(variableName);
             if (it != section->variableValue.end()) {
                 if (it->second != " ")
@@ -183,21 +188,19 @@ private:
     }
 
     std::list<Section> listOfSections;
-    std::set<std::string> NamesOfSections;
+    std::set<std::string> namesOfSections;
 };
 
 //___________________________________________________________________________________________//
 
 int main() {
 
-    setlocale(LC_ALL, "Rus");
-
     try {
         IniParser parser("fin.ini");
         std::string section = "Section2";
         std::string variable = "var1";
 
-        auto value = parser.getValue<std::string>(section, variable);
+        auto value = parser.getValue<double>(section, variable);
 
         std::cout << "In " << section << ": " << variable << " = " << value << '\n';
 
