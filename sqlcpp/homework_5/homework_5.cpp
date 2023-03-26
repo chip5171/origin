@@ -34,14 +34,14 @@ public:
 		std::cin >> firstName >> lastName;
 
 		auto count = tx.query_value <int> ("SELECT COUNT(*) FROM client WHERE "
-			"first_name = '" + firstName + "' AND "
-			"last_name = '" + lastName + "'" );
+			"first_name = '" + tx.esc(firstName) + "' AND "
+			"last_name = '" + tx.esc(lastName) + "'" );
 
 		if (count != 0) {
 			auto queryResult = tx.query <int> (
 				"SELECT client_id FROM client WHERE "
-				"first_name = '" + firstName + "' AND "
-				"last_name = '" + lastName + "'" );
+				"first_name = '" + tx.esc(firstName) + "' AND "
+				"last_name = '" + tx.esc(lastName) + "'" );
 			for (auto [id] : queryResult)
 				return id;
 		}
@@ -149,27 +149,27 @@ public:
 		std::cout << "Enter the client's first name, last name, email or phone: " << std::endl;
 		std::cin >> value;
 		auto count = tx.query_value <int>("SELECT COUNT(*) FROM client WHERE "
-			"first_name = '" + value + "' OR "
-			"last_name = '" + value + "' OR "
-			"email = '" + value + "' ");
+			"first_name = '" + tx.esc(value) + "' OR "
+			"last_name = '" + tx.esc(value) + "' OR "
+			"email = '" + tx.esc(value) + "' ");
 
 		if (count != 0) {
 			auto queryId = tx.query <int>(
 				"SELECT client_id FROM client WHERE "
-				"first_name = '" + value + "' OR "
-				"last_name = '" + value + "' OR "
-				"email = '" + value + "' ");
+				"first_name = '" + tx.esc(value) + "' OR "
+				"last_name = '" + tx.esc(value) + "' OR "
+				"email = '" + tx.esc(value) + "' ");
 			for (auto [id] : queryId) {
 				getDataById(tx, id);
 			}
 		}
 		else {
 			auto count2 = tx.query_value <int>(
-				"SELECT COUNT(*) FROM phone WHERE phone = '" + value + "' ");
+				"SELECT COUNT(*) FROM phone WHERE phone = '" + tx.esc(value) + "' ");
 			if (count2 != 0) {
 				auto queryId = tx.query <int>(
 					"SELECT client_id FROM phone WHERE "
-					"phone = '" + value + "' ");
+					"phone = '" + tx.esc(value) + "' ");
 				for (auto [id] : queryId)
 					getDataById(tx, id);
 			}
