@@ -1,75 +1,69 @@
 ﻿// homework_2_2.cpp : MAP-5 Задание 2. «Прогресс бар»
 
 #include <iostream>
-#include <chrono>
-#include <thread>
+#include <windows.h>
 #include <vector>
+#include <chrono>
 #include <mutex>
-#include <Windows.h>
+#include <thread>
 
 using namespace std::chrono_literals;
 auto handle = GetStdHandle(STD_OUTPUT_HANDLE);
-//std::mutex m;
+std::mutex m;
+
 
 void setCursor(int x, int y) {
     SetConsoleCursorPosition(handle, { static_cast<SHORT>(x), static_cast<SHORT>(y) });
 }
-void setColor(int text, int background)
-{
-    SetConsoleTextAttribute(handle, (WORD)((background << 4) | text));
-}
 
-void progressBar(int x, int y, int length, double& progress, int k) {
-    int fill = static_cast<int>(length * progress);
-    setCursor(x, y);
-    setColor(10 + k, 0);
-    std::cout << "\r поток " << k << " #id " << std::this_thread::get_id() << " ";
-    for (int i = 0; i < fill; ++i) {
-        std::cout << "|";
+void progressBar(int threadNumber, int length) {
+    int count{};
+
+    while (true) {
+        
+        m.lock();
+        setCursor(count + 18, threadNumber + 1);
+        if (!count) std::cout << "\r поток " << threadNumber << " #id " << std::this_thread::get_id() << " ";
+        else std::cout << "|";
+        m.unlock();
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(100 * (threadNumber + 1)));
+        if (++count > length) break;
     }
 }
 
-//_____________________________________________________________________
+void stream(int thr_id, int length) {    
+    auto start = std::chrono::high_resolution_clock::now();
 
-int main(int argc, char** argv) {
+    progressBar(thr_id, length);
+
+    auto end = std::chrono::high_resolution_clock::now();
+    std::chrono::duration <double> time = end - start;
+    setCursor(length + 20, thr_id + 1);
+    std::cout << " " << time.count() << std::endl;
+}
+
+//_______________________________________________________________
+
+int main() {
     setlocale(LC_ALL, "rus");
-
-    int threadNumber = 5;
+    
+    int numberOfThreads = 4;
     int length = 20;
-    double progress = 0;
-    int x = 1;
-    int y = 1;
-       
-    std::vector<std::thread> t;
-    for (int j = 0; j < threadNumber; ++j) {
-        y++;
-    auto job = [x, y, length, &progress, j]() {
-        auto start = std::chrono::high_resolution_clock::now();
-        do {
-            progressBar(x, y, length, progress, j);
-            std::this_thread::sleep_for(std::chrono::milliseconds(1500 * j));
-        } while (progress < 1);
-        progressBar(x, y, length, progress, j);
-        auto end = std::chrono::high_resolution_clock::now();
-        std::chrono::duration <double> time = end - start;
-        std::cout << " " << time.count() << std::endl;
-    };
-        t.push_back(std::thread(job));
+    std::vector<std::thread> threads(numberOfThreads);
 
-        int count = 20;
-        int index = 0;
-        while (index < count) {
-            index += 1 + rand() % 8;
-            if (index > count)
-                index = count;
-            progress = static_cast<double>(index) / count;
-            std::this_thread::sleep_for(std::chrono::milliseconds(200));
-        }
+    for (int i = 0; i < numberOfThreads; ++i) {
+        threads[i] = std::thread(stream, i, length);
     }
-    for (auto& t : t) { t.join(); }
-
+    for (auto& entry : threads) {
+        entry.join();
+    }
     return 0;
 }
+   
+
+
+
 
   
         
