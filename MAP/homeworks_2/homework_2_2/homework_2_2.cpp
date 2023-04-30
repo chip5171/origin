@@ -16,11 +16,13 @@ void setCursor(int x, int y) {
     SetConsoleCursorPosition(handle, { static_cast<SHORT>(x), static_cast<SHORT>(y) });
 }
 
-void progressBar(int threadNumber, int length) {
+void stream(int threadNumber, int length) {
+    auto start = std::chrono::high_resolution_clock::now();
+
     int count{};
 
     while (true) {
-        
+
         m.lock();
         setCursor(count + 18, threadNumber + 1);
         if (!count) std::cout << "\r поток " << threadNumber << " #id " << std::this_thread::get_id() << " ";
@@ -30,16 +32,10 @@ void progressBar(int threadNumber, int length) {
         std::this_thread::sleep_for(std::chrono::milliseconds(100 * (threadNumber + 1)));
         if (++count > length) break;
     }
-}
-
-void stream(int thr_id, int length) {    
-    auto start = std::chrono::high_resolution_clock::now();
-
-    progressBar(thr_id, length);
 
     auto end = std::chrono::high_resolution_clock::now();
     std::chrono::duration <double> time = end - start;
-    setCursor(length + 20, thr_id + 1);
+    setCursor(length + 20, threadNumber + 1);
     std::cout << " " << time.count() << std::endl;
 }
 
