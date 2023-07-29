@@ -15,7 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     }
 
     ui->pb_controlProgressBar->setText("Управлять прогрессом");
-    ui->pb_controlProgressBar->toggle();
+    ui->pb_controlProgressBar->setCheckable(true);
 
     ui->pB_progressBar->setMinimum(0);
     ui->pB_progressBar->setMaximum(100);
