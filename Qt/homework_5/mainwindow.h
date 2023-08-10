@@ -2,8 +2,6 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include <QTime>
-
 #include "stopwatch.h"
 
 QT_BEGIN_NAMESPACE
@@ -20,9 +18,14 @@ public:
 
     ~MainWindow();
 
+signals:
+
+   void sig_circleTime();
+   void sig_clearTime();
+
 private slots:
 
-    void rcv_updateTime();
+    void rcv_updateTime(QString text);
     void on_pb_startStop_clicked();
     void on_pb_circle_clicked();
     void on_pb_clear_clicked();
@@ -31,10 +34,7 @@ private:
 
     Ui::MainWindow *ui;
     StopWatch *stopwatch;
-    QTime curTime;
-    QTime stopTime;
-    int circleTime;
-    int count;
-
 };
+
 #endif // MAINWINDOW_H
+

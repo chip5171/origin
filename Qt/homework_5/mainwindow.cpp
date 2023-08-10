@@ -7,11 +7,6 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     stopwatch = new StopWatch(this);
-    curTime.setHMS(0, 0, 0, 0);
-    stopTime.setHMS(0, 0, 0, 0);
-    circleTime = 0;
-    count = 1;
-
     ui->setupUi(this);
 
     ui->pb_startStop->setCheckable(true);
@@ -21,6 +16,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pb_circle->setEnabled(false);
 
     connect(stopwatch, &StopWatch::sig_updateTime, this, &MainWindow::rcv_updateTime);
+    connect(this, &MainWindow::sig_circleTime, stopwatch, &StopWatch::rcv_circleTime);
+    connect(this, &MainWindow::sig_clearTime, stopwatch, &StopWatch::rcv_clearTime);
 }
 
 MainWindow::~MainWindow()
@@ -28,11 +25,9 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-void MainWindow::rcv_updateTime()
+void MainWindow::rcv_updateTime(QString text)
 {
-    curTime = curTime.addMSecs(100);
-    QString time = curTime.toString("ss.zz");
-    ui->l_time->setText(time.left(time.length()-1));
+    ui->l_time->setText(text);
 }
 
 void MainWindow::on_pb_startStop_clicked()
@@ -53,17 +48,15 @@ void MainWindow::on_pb_startStop_clicked()
 
 void MainWindow::on_pb_circle_clicked()
 {
-    circleTime = stopTime.secsTo(curTime);
-    ui->tB_cirkles->append("Круг " + QString::number(count) + " , время: " + QString::number(circleTime) + " сек");
-    stopTime = curTime;
-    count++;
+    emit sig_circleTime();
+    QString text = stopwatch->strCircleTime;
+    ui->tB_cirkles->append(text);
 }
 
 void MainWindow::on_pb_clear_clicked()
 {
-    ui->l_time->setText("00.0");
-    count = 1;
-    curTime.setHMS(0, 0, 0, 0);
-    stopTime.setHMS(0, 0, 0, 0);
+    ui->l_time->setText("00:00.0");
+    emit sig_clearTime();
 }
+
 
