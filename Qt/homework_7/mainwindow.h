@@ -48,6 +48,8 @@ private slots:
     void DisplayChart();
 
 
+    void on_pb_clearResult_clicked();
+
 private:
     Ui::MainWindow *ui;
     QString pathToFile = "";
@@ -58,6 +60,7 @@ private:
     QVector<double> mins, maxs;
 
     QLineSeries* series;
-
+    QChart *chart;
+    QChartView *chartView;
 };
 #endif // MAINWINDOW_H

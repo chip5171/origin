@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget *parent)
     ui->pb_clearResult->setCheckable(true);
 
        series = new QLineSeries();
+       chart = new QChart();
+       chartView = new QChartView(chart);
+
        QObject::connect(this, MainWindow::sig_displayChart,this, MainWindow::DisplayChart);
 }
 
@@ -16,6 +19,8 @@ MainWindow::~MainWindow()
 {
     delete ui;
     delete series;
+    delete chart;
+    delete chartView;
 }
 
 /****************************************************/
@@ -167,13 +172,11 @@ void MainWindow::DisplayResult(QVector<double> mins, QVector<double> maxs)
 
 void MainWindow::DisplayChart()
 {
-    QChart *chart = new QChart();
     chart->legend()->hide();  // скрыть легенду
     chart->addSeries(series);  // добавить серию на график
     chart->createDefaultAxes();  // Создать ось на основе серии, добавленной к диаграмме
     chart->setTitle("Simple line chart");  // Устанавливаем заголовок графика
 
-    QChartView *chartView = new QChartView(chart);
     chartView->resize(400, 300);
     chartView->show();
 
@@ -244,8 +247,11 @@ void MainWindow::on_pb_start_clicked()
                                                  * и вызов сигнала для отображения графика
                                                  */
 
-                                                for (int i = 0; i < FD; i++) {
-                                                series->append(i, res[i]);
+                                                double xVal = 0;
+                                                double step = 1/FD;
+                                                for (int i = 0; i < FD; ++i) {
+                                                series->append(xVal, res[i]);
+                                                xVal += step;
                                                 }
                                                 emit sig_displayChart();
 
@@ -257,4 +263,13 @@ void MainWindow::on_pb_start_clicked()
 
 }
 
+
+
+void MainWindow::on_pb_clearResult_clicked()
+{
+    if(chart->series().isEmpty() == false){
+            chart->removeSeries(series);
+        }
+
+}
 
