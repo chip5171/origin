@@ -217,6 +217,10 @@ void MainWindow::on_pb_start_clicked()
         return;
     }
 
+    if(chart->series().isEmpty() == false){
+            chart->removeSeries(series);
+    }
+
     ui->chB_maxSucess->setChecked(false);
     ui->chB_procFileSucces->setChecked(false);
     ui->chB_readSucces->setChecked(false);
@@ -264,12 +268,4 @@ void MainWindow::on_pb_start_clicked()
 }
 
 
-
-void MainWindow::on_pb_clearResult_clicked()
-{
-    if(chart->series().isEmpty() == false){
-            chart->removeSeries(series);
-        }
-
-}
 
