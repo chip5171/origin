@@ -12,7 +12,7 @@ MainWindow::MainWindow(QWidget *parent)
        chart = new QChart();
        chartView = new QChartView(chart);
 
-       QObject::connect(this, MainWindow::sig_displayChart,this, MainWindow::DisplayChart);
+       QObject::connect(this, &MainWindow::sig_displayChart,this, &MainWindow::DisplayChart);
 }
 
 MainWindow::~MainWindow()
@@ -220,6 +220,7 @@ void MainWindow::on_pb_start_clicked()
     if(chart->series().isEmpty() == false){
             chart->removeSeries(series);
     }
+    series->clear();
 
     ui->chB_maxSucess->setChecked(false);
     ui->chB_procFileSucces->setChecked(false);
