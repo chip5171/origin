@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.5)
 
-project(PreGraphic VERSION 0.1 LANGUAGES CXX)
+project(homework_7 VERSION 0.1 LANGUAGES CXX)
 
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTOMOC ON)
@@ -18,17 +18,15 @@ set(PROJECT_SOURCES
         mainwindow.h
         mainwindow.ui
 
-
-
 )
 
 
-add_executable(PreGraphic
+add_executable(homework_7
     ${PROJECT_SOURCES}
 )
 
 
-target_link_libraries(PreGraphic Qt6::Widgets
+target_link_libraries(homework_7 Qt6::Widgets
                                       Qt6::Concurrent
                                       Qt6::Charts)
 

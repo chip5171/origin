@@ -47,9 +47,6 @@ private slots:
     void on_pb_start_clicked();
     void DisplayChart();
 
-
-    void on_pb_clearResult_clicked();
-
 private:
     Ui::MainWindow *ui;
     QString pathToFile = "";
