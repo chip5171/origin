@@ -51,7 +51,7 @@ void MainWindow::DisplayRcvData(QString data)
         ui->te_result->clear();
     }
 
-    ui->te_result->append("Принято сообщение от 127.0.0.1, размер сообщения(байт) " + QString::number(udpWorker->messageSize));
+    ui->te_result->append("Принято сообщение от " + (udpWorker->senderIpAddress).toString() + " , размер сообщения(байт) " + QString::number(udpWorker->messageSize));
 
 }
 
@@ -84,8 +84,6 @@ void MainWindow::on_pb_sendData_clicked()
     QDataStream outStr(&dataToSend, QIODevice::WriteOnly);
 
     outStr << userData;
-
     udpWorker->SendDatagram(dataToSend, udpWorker->userUdpSocket, USER_PORT);
-
 }
 

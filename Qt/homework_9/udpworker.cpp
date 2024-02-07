@@ -21,6 +21,8 @@ void UDPworker::ReadUserDatagram(QNetworkDatagram datagram)
     QByteArray inputData;
     inputData = datagram.data( );
 
+    senderIpAddress = datagram.senderAddress();
+
     QDataStream inputStream(&inputData, QIODevice::ReadOnly);
 
     QString data;
@@ -55,8 +57,17 @@ void UDPworker::SendDatagram(const QByteArray &data, QUdpSocket *socket, qint16 
 
     messageSize = socket->writeDatagram(sendDatagram);
 
+//    qDebug() << ip4String;
+
 }
 
+//QHostAddress getSenderIpAddress()
+//{
+
+//    QNetworkDatagram sendDatagram;
+//    sendDatagram
+
+//}
 void UDPworker::ReadServicePendingDatagrams( void )
 {
 

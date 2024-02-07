@@ -24,6 +24,7 @@ public:
     QUdpSocket* serviceUdpSocket;
     QUdpSocket* userUdpSocket;
     qint64 messageSize;
+    QHostAddress senderIpAddress;
 
 signals:
     void sig_sendTimeToGUI(QDateTime data);
