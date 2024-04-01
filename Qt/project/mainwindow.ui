@@ -115,12 +115,12 @@
          </property>
          <property name="dateTime">
           <datetime>
-           <hour>6</hour>
+           <hour>21</hour>
            <minute>0</minute>
            <second>0</second>
            <year>2016</year>
            <month>8</month>
-           <day>14</day>
+           <day>13</day>
           </datetime>
          </property>
         </widget>
@@ -239,8 +239,8 @@
     <property name="title">
      <string>Меню</string>
     </property>
-    <addaction name="actionenything"/>
-    <addaction name="actionenithing"/>
+    <addaction name="separator"/>
+    <addaction name="exit"/>
    </widget>
    <addaction name="menumenu"/>
   </widget>
@@ -250,7 +250,7 @@
     <string>Подключиться</string>
    </property>
   </action>
-  <action name="actionenything">
+  <action name="exit">
    <property name="text">
     <string>Выход</string>
    </property>
@@ -262,5 +262,22 @@
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>exit</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindow</receiver>
+   <slot>close()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>482</x>
+     <y>182</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

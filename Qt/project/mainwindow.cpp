@@ -10,11 +10,16 @@ MainWindow::MainWindow(QWidget *parent)
     ui->dateEdit->setMinimumDate(QDate(2016, 8, 15));
     ui->dateEdit->setMaximumDate(QDate(2017, 9, 14));
     ui->dateEdit->setDisplayFormat("yyyy-MM-dd");
+    ui->pb_getFlights->setEnabled(false);
+    ui->pb_getWorkload->setEnabled(false);
+
+
 
     dataBase = new DataBase(this);
     msg = new QMessageBox(this);
     stat = new Statistics(this);
     stat->setModal(true);
+    timer = new QTimer(this);
 
 
     dataBase->AddDataBase(POSTGRE_DRIVER, DB_NAME);
@@ -24,18 +29,23 @@ MainWindow::MainWindow(QWidget *parent)
     connect(dataBase, &DataBase::sig_SendStatusConnection, this, &MainWindow::ReceiveStatusConnectionToDB);
     connect(dataBase, &DataBase::sig_SendListModel, this, &MainWindow::screenListModel);
     connect(dataBase, &DataBase::sig_SendQueryModel, this, &MainWindow::screenQueryModel);
-    connect(this, &MainWindow::sig_dataFromUser, dataBase, &DataBase::getDataFromUser);
-    connect(this, &MainWindow::sig_airportName, stat, &Statistics::getAirportName);
     connect(dataBase, &DataBase::sig_SendBarSet, stat, &Statistics::createBarSeries);
-    connect(dataBase, &DataBase::sig_SendDayCountMap, stat, &Statistics::createLineSeries);
+    connect(dataBase, &DataBase::sig_SendDayCountList, stat, &Statistics::getFlightsList);
+    connect(stat, &Statistics::sig_displayLineChart, stat, &Statistics::prepareLineChart);
+    connect(stat, &Statistics::sig_monthNumberChanged, stat, &Statistics::createLineSeries);
+    connect(timer, &QTimer::timeout, this, &MainWindow::connectDb);
+
 }
 
 MainWindow::~MainWindow()
 {
+
     delete ui;
     delete dataBase;
     delete msg;
     delete stat;
+    delete timer;
+
 }
 
 void MainWindow::connectDb()
@@ -70,18 +80,23 @@ void MainWindow::ReceiveStatusConnectionToDB(bool status)
 
         ui->statusbar->setStyleSheet("color:green");
         ui->statusbar->showMessage("Подключено к БД");
+        ui->pb_getFlights->setEnabled(true);
+        ui->pb_getWorkload->setEnabled(true);
 
         dataBase->RequestToDB(airportRequest);
 
     }
     else{
-        dataBase->DisconnectFromDataBase(DB_NAME);
+
         msg->setIcon(QMessageBox::Critical);
         msg->setText(dataBase->GetLastError().text());
 
         ui->statusbar->setStyleSheet("color:red");
         ui->statusbar->showMessage("Отключено");
         msg->exec();
+
+        timer->start(5000);
+
     }
 
 }
@@ -92,8 +107,9 @@ void MainWindow::getDataFromUser()
     QString date = ui->dateEdit->text();
     QString airportName = ui->cb_airports->currentText();
 
-    emit sig_dataFromUser(airportName, date);
-    emit sig_airportName(airportName);
+    dataBase->getDataFromUser(airportName, date);
+    stat->getAirportName(airportName);
+
 }
 
 void MainWindow::on_pb_getFlights_clicked()
@@ -117,6 +133,7 @@ void MainWindow::on_pb_getWorkload_clicked()
 
     getDataFromUser();
     dataBase->RequestToDB(3);
+    dataBase->RequestToDB(4);
     stat->show();
 
 }

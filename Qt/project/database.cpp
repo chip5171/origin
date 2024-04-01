@@ -9,6 +9,7 @@ DataBase::DataBase(QObject *parent)
     queryModel = new QSqlQueryModel();
     listModel = new QStringListModel();
     airportsMap = new QMap<QString, QString>();
+    dayCountList = new QList<NumberOfFlights>();
 
     ConnectToDataBase();
 
@@ -22,6 +23,7 @@ DataBase::~DataBase()
     delete queryModel;
     delete listModel;
     delete airportsMap;
+    delete dayCountList;
 
 }
 
@@ -44,11 +46,8 @@ void DataBase::ConnectToDataBase()
     bool status;
 
     status = dataBase->open( );
-    if(status == true ) {
 
-        emit sig_SendStatusConnection(status);
-    }
-    qDebug() << status;
+    emit sig_SendStatusConnection(status);
 
 }
 
@@ -74,7 +73,6 @@ void DataBase::RequestToDB(int requestType)
         }
         case(departureRequest): {
 
-            qDebug() << airportCode << dateOfFlight;
             QString request = "SELECT flight_no, scheduled_departure, ad.airport_name->>'ru' as \"Name\" FROM bookings.flights f "
                               "JOIN bookings.airports_data ad on ad.airport_code = f.arrival_airport "
                               "WHERE f.departure_airport = '" + airportCode + "' AND f.scheduled_departure::date = date('" + dateOfFlight + "')";
@@ -84,7 +82,7 @@ void DataBase::RequestToDB(int requestType)
             break;
         }
         case(arrivalRequest):{
-            qDebug() << airportCode << dateOfFlight;
+
             QString request = "SELECT flight_no, scheduled_arrival, ad.airport_name->>'ru' as \"Name\" FROM bookings.flights f "
                               "JOIN bookings.airports_data ad on ad.airport_code = f.departure_airport "
                               "WHERE f.arrival_airport = '" + airportCode + "' AND f.scheduled_departure::date = date('" + dateOfFlight + "')";
@@ -94,6 +92,7 @@ void DataBase::RequestToDB(int requestType)
             break;
         }
         case(yearLoadRequest):{
+
             QString request = "SELECT count(flight_no), date_trunc('month', scheduled_departure) as \"Month\" FROM bookings.flights f "
                               "WHERE (scheduled_departure::date > date('2016-08-31') AND scheduled_departure::date <= date('2017-08-31')) "
                               "AND ( departure_airport = '" + airportCode + "' or arrival_airport = '" + airportCode + "') group by \"Month\"";
@@ -103,15 +102,17 @@ void DataBase::RequestToDB(int requestType)
             break;
         }
         case(monthLoadRequest):{
+
             QString request = "SELECT count(flight_no), date_trunc('day', scheduled_departure) as \"Day\" FROM bookings.flights f "
                               "WHERE (scheduled_departure::date > date('2016-08-31') AND scheduled_departure::date <= date('2017-08-31')) "
                               "AND ( departure_airport = '" + airportCode + "' or arrival_airport = '" + airportCode + "') group by \"Day\"";
 
-            createDayCountMap(request);
+            createDayCountList(request);
 
-        break;
-    }
+            break;
+        }
         default:
+
             break;
     }
 }
@@ -130,6 +131,7 @@ QStringList DataBase::createStringList(QString request)
 
     list.sort(Qt::CaseInsensitive);
     return list;
+
 }
 
 void DataBase::createAirportsMap(QString request)
@@ -145,16 +147,29 @@ void DataBase::createAirportsMap(QString request)
 
 }
 
-void DataBase::createDayCountMap(QString request)
+void DataBase::createDayCountList(QString request)
 {
+
     *query = QSqlQuery(*dataBase);
 
     if(query->exec(request)){
         while(query->next()) {
-            dayCountMap->insert(query->value(0).toString(), query->value(1).toInt());
+
+            NumberOfFlights str;
+            QString dateTime = query->value(1).toString();
+            QDateTime dt = QDateTime::fromString(dateTime, "yyyy-MM-ddTHH:mm:ss.zzz");
+            str.date = dt.date();
+            str.num = query->value(0).toInt();
+
+            dayCountList->append(str);
+
         }
     }
-    emit sig_SendDayCountMap(dayCountMap);
+
+    emit sig_SendDayCountList(dayCountList);
+
+    dayCountList->clear();
+
 }
 
 void DataBase::createBarSet(QString request)
@@ -168,17 +183,17 @@ void DataBase::createBarSet(QString request)
             barSet->append(query->value(0).toInt());
         }
     }
-    for (int i = 0; i < 12; ++i) {
-        qDebug() << barSet->at(i) << " ";
-    }
 
     emit sig_SendBarSet(barSet);
+
 }
 
 void DataBase::getDataFromUser(QString name, QString date)
 {
+
     airportCode = airportsMap->value(name);
     dateOfFlight = date;
+
 }
 
 void DataBase::initializeQueryModel(QSqlQueryModel *model, QString request, int requestType)
@@ -212,5 +227,7 @@ void DataBase::initializeListModel(QStringListModel *model, QString request)
 
 QSqlError DataBase::GetLastError()
 {
+
     return dataBase->lastError();
+
 }
