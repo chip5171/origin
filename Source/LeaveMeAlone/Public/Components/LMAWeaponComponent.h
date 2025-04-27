@@ -16,24 +16,19 @@ class LEAVEMEALONE_API ULMAWeaponComponent : public UActorComponent
 
 public:
 	ULMAWeaponComponent();
-
 	void Fire();
 	void StopFire();
 	void Reload();
 	void WeaponsReloading();
-
-	UFUNCTION()
 	void OnClipEmpty();
-
+	
+	
 protected:
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	TSubclassOf<ALMABaseWeapon> WeaponClass;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
 	UAnimMontage* ReloadMontage;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Weapon")
-	ALMABaseWeapon* BaseWeaponInstance;
 
 	virtual void BeginPlay() override;
 

@@ -28,10 +28,6 @@ void ULMAWeaponComponent::StopFire()
 void ULMAWeaponComponent::BeginPlay()
 {
 	Super::BeginPlay();
-	if (BaseWeaponInstance)
-	{
-		BaseWeaponInstance->EmptyClip.AddUObject(this, &ULMAWeaponComponent::OnClipEmpty);
-	}
 	
 	SpawnWeapon();
 	InitAnimNotify();
@@ -58,6 +54,8 @@ void ULMAWeaponComponent::SpawnWeapon()
 		{
 			FAttachmentTransformRules AttachmentRules(EAttachmentRule::SnapToTarget, false);
 			Weapon->AttachToComponent(Character->GetMesh(), AttachmentRules, "r_Weapon_Socket");
+			
+			Weapon->EmptyClip.AddUObject(this, &ULMAWeaponComponent::OnClipEmpty);
 		}
 	}
 }
@@ -100,6 +98,7 @@ void ULMAWeaponComponent::WeaponsReloading()
 {
 	if (!CanReload())
 		return;
+	StopFire();
 	Weapon->ChangeClip();
 	AnimReloading = true;
 	ACharacter* Character = Cast<ACharacter>(GetOwner());

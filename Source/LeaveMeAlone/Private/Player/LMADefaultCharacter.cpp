@@ -11,6 +11,7 @@
 #include "Components/LMAHealthComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Engine/Engine.h"
+#include "Weapon/LMABaseWeapon.h"
 
 ALMADefaultCharacter::ALMADefaultCharacter()
 {
@@ -120,7 +121,6 @@ void ALMADefaultCharacter::SprintOn()
 	IsSprint = true;
 	GetCharacterMovement()->MaxWalkSpeed = 1000.0f;
 	DecreaseStamina();
-	
 }
 
 void ALMADefaultCharacter::SprintOff() 
@@ -181,3 +181,4 @@ void ALMADefaultCharacter::OnStaminaChanged(float Value)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 2.0f, FColor::Green, FString::Printf(TEXT("Stamina = %f"), Value));
 }
+

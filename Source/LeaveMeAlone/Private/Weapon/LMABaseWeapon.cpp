@@ -69,7 +69,6 @@ void ALMABaseWeapon::DecrementBullets()
 	if (IsCurrentClipEmpty())
 	{
 		EmptyClip.Broadcast();
-		ChangeClip();
 	}
 }
 

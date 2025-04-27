@@ -10,6 +10,7 @@ class UCameraComponent;
 class USpringArmComponent;
 class ULMAHealthComponent;
 class ULMAWeaponComponent;
+class ALMABaseWeapon;
 class UAnimMontage;
 
 UCLASS()
@@ -88,5 +89,6 @@ private:
 	void OnDeath();
 	void OnHealthChanged(float NewHealth);
 	void RotationPlayerOnCursor();
+	//void OnReload();
 	
 };
